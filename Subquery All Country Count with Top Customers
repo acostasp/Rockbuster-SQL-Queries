@@ -1,0 +1,20 @@
+This query uses subqueries to determine the how many customers are located in each country, as well as how many of those customers are in the top 5 customers who spent the most on rentals.
+
+SELECT A.country, COUNT(DISTINCT(E.customer_id)) AS all_customer_count, COUNT(DISTINCT(B.customer_id)) AS top_customer_count
+FROM country A
+LEFT JOIN 
+  (SELECT A.customer_id, A.first_name, A.last_name, D.city, F.country, SUM(B.amount) AS total_spent
+  FROM Customer A
+  INNER JOIN payment B on A.customer_id = B.customer_id
+  INNER JOIN address C on A.address_id = C.address_id
+  INNER JOIN city D on C.city_id = D.city_id
+  INNER JOIN top_ten_cities E ON D.city = E.city
+  INNER JOIN country F on D.country_id = F.country_id
+  GROUP BY A.customer_id, A.first_name, A.last_name, D.city, F.country
+  ORDER BY total_spent DESC
+  LIMIT 5) B on A.country = B.country
+INNER JOIN city C ON A.country_id = C.country_id
+INNER JOIN address D ON D.city_id = C.city_id
+INNER JOIN customer E ON E.address_id = D.address_id
+GROUP BY A.country
+ORDER BY all_customer_count DESC
