@@ -1,0 +1,15 @@
+This query uses a common table expression to find Rockbusters top 5 customers.
+
+WITH top_five_customers_cte AS
+  (SELECT A.customer_id, A.first_name, A.last_name, D.city, F.country, SUM(B.amount) AS total_spent
+  FROM Customer A
+  INNER JOIN payment B on A.customer_id = B.customer_id
+  INNER JOIN address C on A.address_id = C.address_id
+  INNER JOIN city D on C.city_id = D.city_id
+  INNER JOIN top_ten_cities E ON D.city = E.city
+  INNER JOIN country F on D.country_id = F.country_id
+  GROUP BY A.customer_id, A.first_name, A.last_name, D.city, F.country
+  ORDER BY total_spent DESC
+  LIMIT 5)
+SELECT avg(total_spent) AS average
+FROM top_five_customers_cte
