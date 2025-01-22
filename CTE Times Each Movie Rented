@@ -1,0 +1,13 @@
+This query uses a common table expression to determine how many times each movie was rented
+
+WITH inventory_count_cte AS
+  (SELECT inventory_id, COUNT(inventory_id) AS times_inventory_rented 
+  FROM rental
+  GROUP BY inventory_id
+  ORDER BY COUNT(inventory_id) DESC)
+SELECT A.film_id, A.title, SUM(C.times_inventory_rented) AS total_times_rented
+FROM film A
+LEFT JOIN inventory B ON A.film_id = B.film_id
+LEFT JOIN inventory_count_cte C ON B.inventory_id = C.inventory_id
+GROUP BY A.film_id, A.title
+ORDER BY total_times_rented DESC
