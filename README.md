@@ -17,6 +17,6 @@ the main questions they’d like to answer:
 ## Data and Tools
 This repository contains SQL queries that analyze a dataset of all of Rockbusters' rentals from the summer of 2005. The data set can be found [here.](http://www.postgresqltutorial.com/wp-content/uploads/2019/05/dvdrental.zip)
 
-PostgreSQL was used to enter SQL queries to analyze this data.
+PostgreSQL was used to enter the SQL queries used to analyze this data.
 
 Tableau Public was used to create a story and add visualizations to the analysis. Follow [this link](https://public.tableau.com/authoring/RockbusterStealthDataAnalysis_17375818996410/Story1#1) to view the Tableau Workbook.
